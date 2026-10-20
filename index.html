@@ -1,0 +1,1093 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Radwerk Mitte – Website-Entwurf</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: Startseite als ein Scroll mit Ankerabschnitten (Leasing, Werkstatt, FAQ, Kontakt); B2b-Leasing steht als erster Inhaltsblock nach dem Hero im Mittelpunkt */
+:root{
+  --blue-900:#0D2B45;
+  --blue-700:#15456B;
+  --blue-500:#3573A0;
+  --orange-600:#B04E1A;
+  --orange-500:#D97A35;
+  --bg:#FFFFFF;
+  --surface:#F2F6F8;
+  --surface-2:#E7EEF1;
+  --fg:#15232F;
+  --muted:#51626F;
+  --border:#D7E0E5;
+  --focus:#3573A0;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --blue-900:#9FC6E8;
+    --blue-700:#7FB3DD;
+    --blue-500:#5A9BCB;
+    --orange-600:#F0975A;
+    --orange-500:#E2863F;
+    --bg:#0B1620;
+    --surface:#111F2B;
+    --surface-2:#172A38;
+    --fg:#E7EEF2;
+    --muted:#9FB0BD;
+    --border:#243747;
+    --focus:#7FB3DD;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --blue-900:#9FC6E8;
+  --blue-700:#7FB3DD;
+  --blue-500:#5A9BCB;
+  --orange-600:#F0975A;
+  --orange-500:#E2863F;
+  --bg:#0B1620;
+  --surface:#111F2B;
+  --surface-2:#172A38;
+  --fg:#E7EEF2;
+  --muted:#9FB0BD;
+  --border:#243747;
+  --focus:#7FB3DD;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box;}
+body{
+  background:var(--bg);
+  color:var(--fg);
+  font-family:'Work Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+  font-size:15px;
+  line-height:1.6;
+  margin:0;
+}
+h1,h2,h3,.disp{
+  font-family:'Archivo',sans-serif;
+  text-wrap:balance;
+  font-weight:700;
+  color:var(--fg);
+  margin:0;
+}
+.mono{font-family:'IBM Plex Mono',monospace;}
+a{color:var(--blue-500);}
+img{max-width:100%;}
+button{font-family:inherit;}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;}
+
+.wrap{
+  max-width:1120px;
+  margin:0 auto;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* Entwurfs-Hinweis */
+.draft-bar{
+  background:var(--blue-900);
+  color:#fff;
+}
+.draft-bar .wrap{
+  padding-block:10px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+  font-size:13px;
+}
+.draft-bar strong{font-family:'Archivo',sans-serif;letter-spacing:.02em;}
+
+/* Header */
+header.site{
+  position:sticky;
+  top:env(safe-area-inset-top, 0px);
+  z-index:20;
+  background:var(--bg);
+  border-bottom:1px solid var(--border);
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0 0 auto;
+  height:env(safe-area-inset-top, 0px);
+  z-index:21;
+  background:var(--blue-900);
+}
+.header-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding-block:14px;
+  gap:16px;
+}
+.logo{
+  display:flex;
+  align-items:baseline;
+  gap:6px;
+  font-family:'Archivo',sans-serif;
+  font-weight:800;
+  font-size:19px;
+  letter-spacing:-.01em;
+  flex:0 0 auto;
+}
+.logo .dot{color:var(--orange-600);}
+.logo-note{
+  font-size:10px;
+  color:var(--muted);
+  font-family:'Work Sans',sans-serif;
+  font-weight:500;
+  border:1px dashed var(--border);
+  padding:2px 6px;
+  border-radius:4px;
+  white-space:nowrap;
+}
+nav.primary{
+  display:flex;
+  gap:22px;
+  align-items:center;
+}
+nav.primary a{
+  color:var(--fg);
+  text-decoration:none;
+  font-weight:500;
+  font-size:14px;
+}
+nav.primary a:hover{color:var(--blue-500);}
+.shop-btn{
+  background:var(--blue-700);
+  color:#fff !important;
+  padding:9px 16px;
+  border-radius:6px;
+  font-weight:600 !important;
+  font-size:13px !important;
+}
+.menu-toggle{
+  display:none;
+  background:none;
+  border:1px solid var(--border);
+  border-radius:6px;
+  width:40px;
+  height:40px;
+  color:var(--fg);
+  font-size:18px;
+  cursor:pointer;
+}
+@media (max-width:760px){
+  nav.primary{
+    display:none;
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    background:var(--bg);
+    border-bottom:1px solid var(--border);
+    flex-direction:column;
+    align-items:stretch;
+    padding:12px max(16px, env(safe-area-inset-left, 0px)) 16px max(16px, env(safe-area-inset-left, 0px));
+    gap:14px;
+  }
+  nav.primary.open{display:flex;}
+  .shop-btn{text-align:center;}
+  .menu-toggle{display:block;}
+  header.site{position:relative;}
+}
+
+/* Hero */
+.hero{
+  background:linear-gradient(180deg,var(--surface),var(--bg) 70%);
+  padding-block:52px 44px;
+  border-bottom:1px solid var(--border);
+}
+.hero-grid{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:40px;
+  align-items:center;
+}
+@media (max-width:820px){.hero-grid{grid-template-columns:1fr;}}
+.eyebrow{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--orange-600);
+  font-weight:600;
+  margin-bottom:10px;
+  display:block;
+}
+.hero h1{
+  font-size:clamp(28px,4.4vw,44px);
+  line-height:1.08;
+  margin-bottom:16px;
+}
+.hero p.lead{
+  font-size:16px;
+  color:var(--muted);
+  max-width:46ch;
+  margin-bottom:24px;
+}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap;}
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:12px 20px;
+  border-radius:7px;
+  font-weight:600;
+  font-size:14px;
+  text-decoration:none;
+  border:1px solid transparent;
+  cursor:pointer;
+}
+.btn-primary{background:var(--orange-500);color:#fff;}
+.btn-primary:hover{background:var(--orange-600);}
+.btn-outline{background:transparent;color:var(--blue-700);border-color:var(--border);}
+.btn-outline:hover{border-color:var(--blue-500);}
+.hero-card{
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:22px;
+}
+.hero-card .fig{
+  font-family:'Archivo',sans-serif;
+  font-weight:800;
+  font-size:30px;
+  color:var(--blue-700);
+}
+.hero-card .fig-label{color:var(--muted);font-size:13px;margin-top:2px;}
+.hero-card hr{border:none;border-top:1px solid var(--border);margin:16px 0;}
+.hero-card ul{margin:0;padding-left:18px;color:var(--muted);font-size:13.5px;display:flex;flex-direction:column;gap:8px;}
+
+/* Trust strip */
+.trust{
+  padding-block:40px;
+  border-bottom:1px solid var(--border);
+}
+.trust h2{font-size:21px;margin-bottom:22px;}
+.trust-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+}
+@media (max-width:880px){.trust-grid{grid-template-columns:1fr 1fr;}}
+@media (max-width:480px){.trust-grid{grid-template-columns:1fr;}}
+.trust-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:18px;
+}
+.trust-card .ico{
+  width:34px;height:34px;border-radius:8px;
+  background:var(--blue-900);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;
+  margin-bottom:12px;
+}
+.trust-card h3{font-size:14.5px;margin-bottom:6px;}
+.trust-card p{font-size:13px;color:var(--muted);margin:0;}
+
+/* Section shell */
+section{padding-block:52px;border-bottom:1px solid var(--border);}
+.section-head{max-width:62ch;margin-bottom:28px;}
+.section-head .eyebrow{margin-bottom:8px;}
+.section-head h2{font-size:clamp(22px,3vw,30px);margin-bottom:10px;}
+.section-head p{color:var(--muted);margin:0;}
+
+/* B2b / Leasing */
+.leasing-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:36px;
+  align-items:start;
+}
+@media (max-width:860px){.leasing-grid{grid-template-columns:1fr;}}
+.benefit-list{list-style:none;margin:0 0 24px;padding:0;display:flex;flex-direction:column;gap:14px;}
+.benefit-list li{display:flex;gap:12px;align-items:flex-start;font-size:14.5px;}
+.benefit-list .mark{
+  flex:0 0 auto;width:22px;height:22px;border-radius:50%;
+  background:var(--surface-2);color:var(--orange-600);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:13px;margin-top:1px;
+}
+.calc-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:24px;
+}
+.calc-card h3{font-size:16px;margin-bottom:4px;}
+.calc-card .sub{color:var(--muted);font-size:13px;margin-bottom:18px;}
+.field{margin-bottom:14px;}
+.field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;}
+.field .input-row{position:relative;}
+.field input{
+  width:100%;
+  padding:10px 12px;
+  border:1px solid var(--border);
+  border-radius:7px;
+  background:var(--bg);
+  color:var(--fg);
+  font-size:14px;
+  font-family:'IBM Plex Mono',monospace;
+}
+.field input:focus{border-color:var(--focus);}
+.calc-result{
+  margin-top:18px;
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.calc-result .amount{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:24px;color:var(--blue-700);}
+.calc-result .amount-label{font-size:12.5px;color:var(--muted);}
+.placeholder-note{
+  margin-top:14px;
+  font-size:12px;
+  color:var(--orange-600);
+  background:color-mix(in srgb, var(--orange-500) 12%, transparent);
+  border:1px dashed var(--orange-500);
+  border-radius:7px;
+  padding:10px 12px;
+  line-height:1.5;
+}
+
+/* Referenzen */
+.ref-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  margin-bottom:22px;
+}
+@media (max-width:760px){.ref-grid{grid-template-columns:1fr;}}
+.ref-card{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:18px;
+  background:var(--bg);
+}
+.ref-card .kind{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-bottom:6px;}
+.ref-card .name{font-family:'Archivo',sans-serif;font-weight:700;font-size:15px;margin-bottom:6px;}
+.ref-card .detail{font-size:13px;color:var(--muted);margin:0;}
+.partner-strip{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.partner-chip{
+  border:1px solid var(--border);
+  border-radius:999px;
+  padding:7px 14px;
+  font-size:12.5px;
+  color:var(--muted);
+  background:var(--surface);
+}
+
+/* Werkstatt */
+.loc-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+@media (max-width:700px){.loc-grid{grid-template-columns:1fr;}}
+.loc-card{
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:20px;
+  background:var(--surface);
+}
+.loc-card h3{font-size:16px;margin-bottom:10px;}
+.loc-card dl{margin:0;font-size:13.5px;color:var(--muted);display:grid;grid-template-columns:auto 1fr;gap:4px 10px;}
+.loc-card dt{font-weight:600;color:var(--fg);}
+.loc-card dd{margin:0;}
+
+/* FAQ */
+.faq-search{
+  display:flex;
+  gap:10px;
+  margin-bottom:20px;
+  flex-wrap:wrap;
+}
+.faq-search input{
+  flex:1;
+  min-width:220px;
+  padding:11px 14px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:var(--bg);
+  color:var(--fg);
+  font-size:14px;
+}
+.faq-list{display:flex;flex-direction:column;gap:10px;}
+.faq-item{
+  border:1px solid var(--border);
+  border-radius:9px;
+  background:var(--bg);
+  overflow:hidden;
+}
+.faq-q{
+  width:100%;
+  text-align:left;
+  background:none;
+  border:none;
+  padding:14px 16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  cursor:pointer;
+  font-size:14.5px;
+  font-weight:600;
+  color:var(--fg);
+}
+.faq-q .tag{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10.5px;
+  font-weight:600;
+  color:var(--blue-700);
+  background:var(--surface-2);
+  border-radius:4px;
+  padding:3px 7px;
+  flex:0 0 auto;
+}
+.faq-q .chev{transition:transform .15s ease;color:var(--muted);flex:0 0 auto;}
+.faq-item[data-open="true"] .chev{transform:rotate(45deg);}
+.faq-a{
+  display:none;
+  padding:0 16px 16px;
+  font-size:13.5px;
+  color:var(--muted);
+  max-width:66ch;
+}
+.faq-item[data-open="true"] .faq-a{display:block;}
+.faq-empty{display:none;color:var(--muted);font-size:13.5px;padding:18px 0;}
+.faq-footnote{margin-top:16px;font-size:12px;color:var(--muted);}
+
+/* Kontakt */
+.contact-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:36px;
+}
+@media (max-width:860px){.contact-grid{grid-template-columns:1fr;}}
+.topic-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+  margin-bottom:16px;
+}
+.topic-pick{
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:10px 12px;
+  background:var(--bg);
+  cursor:pointer;
+  font-size:13px;
+  text-align:left;
+  color:var(--fg);
+}
+.topic-pick[aria-pressed="true"]{
+  border-color:var(--blue-500);
+  background:color-mix(in srgb, var(--blue-500) 10%, transparent);
+  font-weight:600;
+}
+form .field textarea{
+  width:100%;
+  padding:10px 12px;
+  border:1px solid var(--border);
+  border-radius:7px;
+  background:var(--bg);
+  color:var(--fg);
+  font-size:14px;
+  font-family:inherit;
+  resize:vertical;
+  min-height:92px;
+}
+.consent-row{
+  display:flex;
+  gap:9px;
+  align-items:flex-start;
+  font-size:12.5px;
+  color:var(--muted);
+  margin:14px 0 18px;
+}
+.consent-row input{margin-top:3px;}
+.routing-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:22px;
+  align-self:start;
+}
+.routing-card h3{font-size:15px;margin-bottom:10px;}
+.routing-current{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:14px;
+  margin-bottom:14px;
+}
+.routing-current .avatar{
+  width:38px;height:38px;border-radius:50%;
+  background:var(--orange-500);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Archivo',sans-serif;font-weight:700;
+  flex:0 0 auto;
+}
+.routing-current .who{font-weight:600;font-size:13.5px;}
+.routing-current .what{font-size:12px;color:var(--muted);}
+.routing-card p{font-size:12.5px;color:var(--muted);margin:0;}
+.confirm-box{
+  display:none;
+  margin-top:18px;
+  background:color-mix(in srgb, var(--blue-500) 12%, transparent);
+  border:1px solid var(--blue-500);
+  border-radius:9px;
+  padding:14px 16px;
+  font-size:13.5px;
+}
+.confirm-box[data-shown="true"]{display:block;}
+
+/* Footer */
+footer{padding-block:40px 32px;}
+.foot-grid{
+  display:grid;
+  grid-template-columns:1.2fr 1fr 1fr;
+  gap:28px;
+  margin-bottom:26px;
+}
+@media (max-width:760px){.foot-grid{grid-template-columns:1fr;}}
+footer h4{font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:12px;font-weight:600;}
+footer ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;font-size:13.5px;}
+footer ul a{color:var(--fg);text-decoration:none;}
+footer ul a:hover{color:var(--blue-500);}
+.foot-bottom{
+  border-top:1px solid var(--border);
+  padding-top:18px;
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  font-size:12px;
+  color:var(--muted);
+}
+
+/* Consent banner */
+.consent-banner{
+  position:fixed;
+  left:0;right:0;bottom:0;
+  z-index:30;
+  background:var(--blue-900);
+  color:#fff;
+  padding:16px max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  display:none;
+}
+.consent-banner[data-visible="true"]{display:block;}
+.consent-inner{
+  max-width:1120px;margin:0 auto;
+  display:flex;gap:16px;align-items:center;flex-wrap:wrap;
+}
+.consent-inner p{margin:0;font-size:12.5px;flex:1;min-width:220px;color:#E7EEF2;}
+.consent-actions{display:flex;gap:8px;}
+.consent-actions button{
+  border-radius:6px;padding:8px 14px;font-size:12.5px;font-weight:600;cursor:pointer;border:1px solid transparent;
+}
+.btn-accept{background:var(--orange-500);color:#fff;}
+.btn-decline{background:transparent;color:#fff;border-color:rgba(255,255,255,.4);}
+
+.bike-icon{width:1em;height:1em;stroke:currentColor;vertical-align:-0.15em;flex:0 0 auto;}
+.logo .bike-icon{width:22px;height:22px;color:var(--orange-600);}
+.eyebrow .bike-icon{width:15px;height:15px;margin-right:5px;vertical-align:-0.2em;}
+.trust-card .ico .bike-icon{width:18px;height:18px;}
+.hero{position:relative;overflow:hidden;}
+.hero-bike-bg{
+  position:absolute;
+  right:-30px;
+  top:-40px;
+  width:300px;
+  height:300px;
+  color:var(--blue-700);
+  opacity:.07;
+  pointer-events:none;
+  z-index:0;
+}
+.hero-grid{position:relative;z-index:1;}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="icon-bike" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="5.5" cy="17.5" r="3.5"/>
+    <circle cx="18.5" cy="17.5" r="3.5"/>
+    <circle cx="15" cy="5" r="1.3"/>
+    <path d="M5.5 17.5 10 8h5l3.5 9.5"/>
+    <path d="M10 8l2.5 6h5.5"/>
+    <path d="M7.5 8h4"/>
+  </symbol>
+</svg>
+
+<div class="draft-bar">
+  <div class="wrap">
+    <strong>Interner Entwurf</strong>
+    <span>· Farbwerte, Logo, FAQ-Inhalte, Kalkulatorwerte und SLA-Texte sind Platzhalter · Freigabe durch Merle Vogelsang steht noch aus</span>
+  </div>
+</div>
+
+<header class="site">
+  <div class="wrap header-row">
+    <div class="logo"><svg class="bike-icon" aria-hidden="true"><use href="#icon-bike"></use></svg> Radwerk<span class="dot">·</span>Mitte <span class="logo-note">Platzhalter-Logo</span></div>
+    <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="primaryNav" aria-label="Menü öffnen">☰</button>
+    <nav class="primary" id="primaryNav">
+      <a href="#leasing">Dienstrad-Leasing</a>
+      <a href="#werkstatt">Werkstatt</a>
+      <a href="#faq">FAQ</a>
+      <a href="#kontakt">Kontakt</a>
+      <a class="shop-btn" href="https://shop.radwerk-mitte.example" target="_blank" rel="noopener">Online-Shop ↗</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero" style="border-bottom:1px solid var(--border);">
+    <svg class="hero-bike-bg" aria-hidden="true"><use href="#icon-bike"></use></svg>
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow"><svg class="bike-icon" aria-hidden="true"><use href="#icon-bike"></use></svg>Dienstrad-Leasing für Arbeitgeber</span>
+        <h1>Räder für Ihr ganzes Team – geplant, geliefert, gewartet aus einer Hand.</h1>
+        <p class="lead">Radwerk Mitte stattet Unternehmen in Kassel und Göttingen mit E-Bikes und Diensträdern aus, inklusive Werkstatt-Service vor Ort. Privatkundinnen und -kunden finden hier weiterhin alles für Kauf, Beratung und Reparatur.</p>
+        <div class="cta-row">
+          <a href="#kontakt" class="btn btn-primary">Leasing-Anfrage stellen</a>
+          <a href="https://shop.radwerk-mitte.example" target="_blank" rel="noopener" class="btn btn-outline">Zum Online-Shop ↗</a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="fig">80 Räder</div>
+        <div class="fig-label">im Einsatz bei einem Klinikum aus unserer Region</div>
+        <hr>
+        <ul>
+          <li>Zwei Werkstätten in Kassel und Göttingen – Service vor Ort statt Einsendung</li>
+          <li>Ein persönlicher Ansprechpartner für Vertrieb, Abrechnung und Reparatur</li>
+          <li>Seit 1989 gewachsenes Netzwerk regionaler Partner und Zulieferer</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="trust">
+    <div class="wrap">
+      <h2>Das unterscheidet uns von großen Online-Händlern</h2>
+      <div class="trust-grid">
+        <div class="trust-card">
+          <div class="ico"><svg class="bike-icon" aria-hidden="true"><use href="#icon-bike"></use></svg></div>
+          <h3>Regional gewachsen</h3>
+          <p>Über 35 Jahre Netzwerk aus Partnern und Zulieferern in der Region – keine anonyme Plattform.</p>
+        </div>
+        <div class="trust-card">
+          <div class="ico"><svg class="bike-icon" aria-hidden="true"><use href="#icon-bike"></use></svg></div>
+          <h3>Direkt erreichbar</h3>
+          <p>Ein Anruf genügt: <span class="mono">[Platzhalter Telefonnummer]</span> – ohne Warteschleife an eine Zentrale.</p>
+        </div>
+        <div class="trust-card">
+          <div class="ico"><svg class="bike-icon" aria-hidden="true"><use href="#icon-bike"></use></svg></div>
+          <h3>Service aus einer Hand</h3>
+          <p>Von der Einzelreparatur bis zur Ausstattung ganzer Firmenflotten – ein Team, ein Ansprechpartner.</p>
+        </div>
+        <div class="trust-card">
+          <div class="ico"><svg class="bike-icon" aria-hidden="true"><use href="#icon-bike"></use></svg></div>
+          <h3>Bereits bewährt</h3>
+          <p>Klinikum, Stadtverwaltung und Pflegedienst aus der Region leasen schon heute bei uns.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="leasing">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow"><svg class="bike-icon" aria-hidden="true"><use href="#icon-bike"></use></svg>Für Arbeitgeber</span>
+        <h2>Dienstrad-Leasing, das Ihr Personalbudget planbar macht</h2>
+        <p>Sie stellen die Benefit-Entscheidung, wir übernehmen Beratung, Abwicklung und Werkstatt-Service. Ihre Beschäftigten wählen ihr Rad, Sie zahlen eine feste monatliche Rate.</p>
+      </div>
+      <div class="leasing-grid">
+        <div>
+          <ul class="benefit-list">
+            <li><span class="mark">✓</span><span><strong>Planbare Kosten:</strong> eine feste monatliche Rate statt Einzelrechnungen, Abrechnung läuft über die Gehaltsabrechnung.</span></li>
+            <li><span class="mark">✓</span><span><strong>Kein Zusatzaufwand für HR:</strong> wir begleiten Auswahl, Bestellung und Übergabe der Räder direkt mit Ihrem Team.</span></li>
+            <li><span class="mark">✓</span><span><strong>Werkstatt inklusive:</strong> Wartung und Reparatur in Kassel und Göttingen, ohne Umwege über einen Online-Anbieter.</span></li>
+            <li><span class="mark">✓</span><span><strong>Erprobt im Mittelstand:</strong> aktuell u. a. bei einem Klinikum, einer Stadtverwaltung und einem Pflegedienst im Einsatz.</span></li>
+          </ul>
+          <a href="#kontakt" class="btn btn-primary">Angebot für mein Unternehmen anfragen</a>
+        </div>
+        <div class="calc-card">
+          <h3>Leasing-Rate überschlagen</h3>
+          <p class="sub">Für Beschäftigte: Radpreis und Bruttogehalt eingeben, Richtwert für die monatliche Rate erhalten.</p>
+          <div class="field">
+            <label for="calcPreis">Radpreis (brutto, €)</label>
+            <div class="input-row"><input type="number" id="calcPreis" inputmode="decimal" min="0" step="50" value="3200"></div>
+          </div>
+          <div class="field">
+            <label for="calcGehalt">Monatliches Bruttogehalt (€)</label>
+            <div class="input-row"><input type="number" id="calcGehalt" inputmode="decimal" min="0" step="50" value="3400"></div>
+          </div>
+          <div class="calc-result">
+            <div>
+              <div class="amount" id="calcErgebnis">–</div>
+              <div class="amount-label">geschätzte monatliche Rate</div>
+            </div>
+          </div>
+          <div class="placeholder-note">Platzhalter-Rechnung zur Veranschaulichung. Die verbindliche Formel inkl. Steuer- und Versicherungsanteil liefert unser Leasingpartner und wird hier konfigurierbar hinterlegt, sobald die Werte vorliegen.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="referenzen">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Vertrauen, das sich belegen lässt</span>
+        <h2>Schon im Einsatz bei Arbeitgebern aus der Region</h2>
+        <p>Konkrete Referenzen statt Versprechen – echte Namen und Logos folgen nach Freigabe der jeweiligen Kunden.</p>
+      </div>
+      <div class="ref-grid">
+        <div class="ref-card">
+          <div class="kind">Gesundheitswesen</div>
+          <div class="name">Klinikum [Platzhalter Name]</div>
+          <p class="detail">80 Dienstfahrräder im laufenden Einsatz, Referenzfall aus dem Kundengespräch.</p>
+        </div>
+        <div class="ref-card">
+          <div class="kind">Öffentliche Verwaltung</div>
+          <div class="name">Stadtverwaltung [Platzhalter Name]</div>
+          <p class="detail">Dienstrad-Flotte für mehrere Ämter, laufende Betreuung durch unseren Vertrieb.</p>
+        </div>
+        <div class="ref-card">
+          <div class="kind">Pflege & Soziales</div>
+          <div class="name">Pflegedienst [Platzhalter Name]</div>
+          <p class="detail">E-Bikes für ambulante Touren, Wartung in unserer Werkstatt vor Ort.</p>
+        </div>
+      </div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">Regionale Partner und Zulieferer, mit denen wir seit Jahren zusammenarbeiten:</p>
+      <div class="partner-strip">
+        <span class="partner-chip">[Platzhalter Partner 1]</span>
+        <span class="partner-chip">[Platzhalter Partner 2]</span>
+        <span class="partner-chip">[Platzhalter Partner 3]</span>
+        <span class="partner-chip">[Platzhalter Zulieferer]</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="werkstatt">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow"><svg class="bike-icon" aria-hidden="true"><use href="#icon-bike"></use></svg>Familienbetrieb seit 1989</span>
+        <h2>Zwei Werkstätten, ein Qualitätsanspruch</h2>
+        <p>Gegründet von Heiner Vogelsang in einem Kasseler Hinterhof, heute mit Ausbildungsbetrieb an beiden Standorten. Reparatur, Wartung und Beratung für Privat- und Geschäftskunden.</p>
+      </div>
+      <div class="loc-grid">
+        <div class="loc-card">
+          <h3>Standort Kassel</h3>
+          <dl>
+            <dt>Adresse</dt><dd>[Platzhalter Straße, PLZ Kassel]</dd>
+            <dt>Telefon</dt><dd>[Platzhalter Telefonnummer]</dd>
+            <dt>Öffnungszeiten</dt><dd>[Platzhalter Öffnungszeiten]</dd>
+          </dl>
+        </div>
+        <div class="loc-card">
+          <h3>Standort Göttingen</h3>
+          <dl>
+            <dt>Adresse</dt><dd>[Platzhalter Straße, PLZ Göttingen]</dd>
+            <dt>Telefon</dt><dd>[Platzhalter Telefonnummer]</dd>
+            <dt>Öffnungszeiten</dt><dd>[Platzhalter Öffnungszeiten]</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Bevor Sie anrufen</span>
+        <h2>Häufige Fragen</h2>
+        <p>Eine erste Auswahl zur Orientierung. Die vollständige Liste mit mindestens 20 Fragen entsteht gemeinsam mit unserem Kundenservice.</p>
+      </div>
+      <div class="faq-search">
+        <input type="search" id="faqSearch" placeholder="Frage oder Stichwort suchen, z. B. „Rate“, „Reparatur“, „Leasing“ …" aria-label="FAQ durchsuchen">
+      </div>
+      <div class="faq-list" id="faqList">
+        <div class="faq-item" data-open="false" data-text="wie hoch ist die monatliche rate beim dienstrad leasing die rate hängt von radpreis bruttogehalt und der laufzeit ab nutzen sie den rechner oben für eine erste orientierung die verbindlichen werte stellt unser leasingpartner">
+          <button class="faq-q" aria-expanded="false">
+            <span><span class="tag">Leasing</span> Wie hoch ist die monatliche Rate beim Dienstrad-Leasing?</span>
+            <span class="chev">+</span>
+          </button>
+          <div class="faq-a">Die Rate hängt von Radpreis, Bruttogehalt und Laufzeit ab. Nutzen Sie den Rechner oben für eine erste Orientierung – die verbindlichen Werte stellt unser Leasingpartner. [Platzhalter-Antwort]</div>
+        </div>
+        <div class="faq-item" data-open="false" data-text="was passiert bei einem defekt während der leasinglaufzeit reparaturen übernehmen wir in unseren werkstätten in kassel und göttingen meist ohne zusatzkosten details regelt der leasingvertrag">
+          <button class="faq-q" aria-expanded="false">
+            <span><span class="tag">Leasing</span> Was passiert bei einem Defekt während der Leasinglaufzeit?</span>
+            <span class="chev">+</span>
+          </button>
+          <div class="faq-a">Reparaturen übernehmen wir in unseren Werkstätten in Kassel und Göttingen, meist ohne Zusatzkosten. Details regelt der Leasingvertrag. [Platzhalter-Antwort]</div>
+        </div>
+        <div class="faq-item" data-open="false" data-text="wie lange dauert eine reparatur in der werkstatt bei standardreparaturen meist ein bis zwei werktage bei hoher auslastung informieren wir sie vorab über eine längere wartezeit">
+          <button class="faq-q" aria-expanded="false">
+            <span><span class="tag">Werkstatt</span> Wie lange dauert eine Reparatur in der Werkstatt?</span>
+            <span class="chev">+</span>
+          </button>
+          <div class="faq-a">Bei Standardreparaturen meist ein bis zwei Werktage. Bei hoher Auslastung informieren wir Sie vorab über eine längere Wartezeit. [Platzhalter-Antwort]</div>
+        </div>
+        <div class="faq-item" data-open="false" data-text="kann ich ein rad ohne termin vorbeibringen kurze reparaturen nehmen wir spontan an für größere arbeiten empfehlen wir einen termin über das kontaktformular">
+          <button class="faq-q" aria-expanded="false">
+            <span><span class="tag">Werkstatt</span> Kann ich ein Rad ohne Termin vorbeibringen?</span>
+            <span class="chev">+</span>
+          </button>
+          <div class="faq-a">Kurze Reparaturen nehmen wir spontan an. Für größere Arbeiten empfehlen wir einen Termin über das Kontaktformular. [Platzhalter-Antwort]</div>
+        </div>
+        <div class="faq-item" data-open="false" data-text="wo kann ich ein neues rad kaufen neue räder und zubehör finden sie in unserem online shop sowie direkt in beiden filialen">
+          <button class="faq-q" aria-expanded="false">
+            <span><span class="tag">Kauf</span> Wo kann ich ein neues Rad kaufen?</span>
+            <span class="chev">+</span>
+          </button>
+          <div class="faq-a">Neue Räder und Zubehör finden Sie in unserem Online-Shop sowie direkt in beiden Filialen. [Platzhalter-Antwort]</div>
+        </div>
+        <div class="faq-item" data-open="false" data-text="bieten sie auch custom räder oder sonderanfertigungen an custom räder für das luxussegment werden aktuell separat getestet und sind noch nicht über diese seite verfügbar">
+          <button class="faq-q" aria-expanded="false">
+            <span><span class="tag">Kauf</span> Bieten Sie auch Custom-Räder oder Sonderanfertigungen an?</span>
+            <span class="chev">+</span>
+          </button>
+          <div class="faq-a">Custom-Räder für das Luxussegment werden aktuell separat getestet und sind noch nicht über diese Seite verfügbar. [Platzhalter-Antwort]</div>
+        </div>
+        <div class="faq-item" data-open="false" data-text="gibt es ein partnerportal mit login für geschäftskunden ein login-portal ist aktuell nicht verfügbar anfragen nehmen wir über das kontaktformular oder telefonisch entgegen">
+          <button class="faq-q" aria-expanded="false">
+            <span><span class="tag">Allgemein</span> Gibt es ein Partnerportal mit Login für Geschäftskunden?</span>
+            <span class="chev">+</span>
+          </button>
+          <div class="faq-a">Ein Login-Portal ist aktuell nicht verfügbar. Anfragen nehmen wir über das Kontaktformular oder telefonisch entgegen. [Platzhalter-Antwort]</div>
+        </div>
+        <div class="faq-item" data-open="false" data-text="wie schnell erhalte ich eine antwort auf meine anfrage bei geschäftsanfragen erhalten sie zunächst eine automatische eingangsbestätigung unser vertrieb meldet sich in der regel innerhalb weniger werktage">
+          <button class="faq-q" aria-expanded="false">
+            <span><span class="tag">Allgemein</span> Wie schnell erhalte ich eine Antwort auf meine Anfrage?</span>
+            <span class="chev">+</span>
+          </button>
+          <div class="faq-a">Bei Geschäftsanfragen erhalten Sie zunächst eine automatische Eingangsbestätigung. Unser Vertrieb meldet sich in der Regel innerhalb weniger Werktage. [Platzhalter-Antwort]</div>
+        </div>
+      </div>
+      <p class="faq-empty" id="faqEmpty">Keine passenden Fragen gefunden. Nutzen Sie gern das Kontaktformular unten.</p>
+      <p class="faq-footnote">Beispielhafte Auswahl, abgestimmt auf die im Kundengespräch genannten Engpässe. Vollständige Liste folgt aus den Support-Anfragen von Amara Osei.</p>
+    </div>
+  </section>
+
+  <section id="kontakt" style="border-bottom:none;">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Anfrage statt Warteschleife</span>
+        <h2>Schreiben Sie uns – wir sortieren intern vor</h2>
+        <p>Wählen Sie ein Thema, Ihre Anfrage geht direkt an die zuständige Stelle. Sie erhalten umgehend eine Eingangsbestätigung per E-Mail.</p>
+      </div>
+      <div class="contact-grid">
+        <form id="contactForm" novalidate>
+          <div class="field">
+            <label id="topicLabel">Thema</label>
+            <div class="topic-grid" role="group" aria-labelledby="topicLabel">
+              <button type="button" class="topic-pick" data-topic="B2b" aria-pressed="true">B2b-Leasing</button>
+              <button type="button" class="topic-pick" data-topic="Werkstatt" aria-pressed="false">Werkstatt</button>
+              <button type="button" class="topic-pick" data-topic="Kauf" aria-pressed="false">Kauf</button>
+              <button type="button" class="topic-pick" data-topic="Sonstiges" aria-pressed="false">Sonstiges</button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="cName">Name</label>
+            <div class="input-row"><input type="text" id="cName" required style="font-family:inherit;"></div>
+          </div>
+          <div class="field">
+            <label for="cMail">E-Mail</label>
+            <div class="input-row"><input type="email" id="cMail" required style="font-family:inherit;"></div>
+          </div>
+          <div class="field">
+            <label for="cMsg">Nachricht</label>
+            <textarea id="cMsg" required></textarea>
+          </div>
+          <div class="consent-row">
+            <input type="checkbox" id="cConsent" required>
+            <label for="cConsent">Ich bin mit der Verarbeitung meiner Angaben zur Bearbeitung dieser Anfrage gemäß Datenschutzerklärung einverstanden. [Platzhalter-Datenschutztext]</label>
+          </div>
+          <button type="submit" class="btn btn-primary">Anfrage senden</button>
+        </form>
+        <aside class="routing-card">
+          <h3>Ihre Anfrage geht an:</h3>
+          <div class="routing-current" id="routingCurrent">
+            <div class="avatar" id="routingAvatar">V</div>
+            <div>
+              <div class="who" id="routingWho">Vertrieb Geschäftskunden</div>
+              <div class="what" id="routingWhat">Leasing-Angebote, B2b-Konditionen</div>
+            </div>
+          </div>
+          <p>Die Zuordnung Thema → Zuständigkeit ist ein Vorschlag aus dem Kundengespräch und muss mit Radwerk Mitte final bestätigt werden.</p>
+          <div class="confirm-box" id="confirmBox">
+            Vielen Dank! Ihre Anfrage wurde erfasst. Eine Eingangsbestätigung geht in Kürze an die angegebene E-Mail-Adresse. [Demo – keine echte Übermittlung]
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="logo" style="margin-bottom:10px;"><svg class="bike-icon" aria-hidden="true"><use href="#icon-bike"></use></svg> Radwerk<span class="dot">·</span>Mitte</div>
+        <p style="font-size:13px;color:var(--muted);max-width:40ch;margin:0;">Familienunternehmen seit 1989. Werkstatt, Verkauf und Dienstrad-Leasing in Kassel und Göttingen.</p>
+      </div>
+      <div>
+        <h4>Standorte</h4>
+        <ul>
+          <li>Kassel – [Platzhalter Adresse]</li>
+          <li>Göttingen – [Platzhalter Adresse]</li>
+          <li><a href="https://shop.radwerk-mitte.example" target="_blank" rel="noopener">Online-Shop ↗</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Rechtliches</h4>
+        <ul>
+          <li><a href="#">Impressum [Platzhalter]</a></li>
+          <li><a href="#">Datenschutz [Platzhalter]</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Radwerk Mitte GmbH · Entwurfsstand, nicht final</span>
+      <span>Farben Blau/Orange, Logo und Inhalte vorläufig – Freigabe durch Merle Vogelsang ausstehend</span>
+    </div>
+  </div>
+</footer>
+
+<div class="consent-banner" id="consentBanner">
+  <div class="consent-inner">
+    <p>Wir möchten Besuche dieser Seite anonymisiert auswerten (Besucher, Absprungrate, Anfragen), um die Seite zu verbessern. Tracking startet erst nach Ihrer Zustimmung. [Platzhalter DSGVO-Hinweis, finaler Text folgt]</p>
+    <div class="consent-actions">
+      <button class="btn-decline" id="consentDecline">Ablehnen</button>
+      <button class="btn-accept" id="consentAccept">Zustimmen</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  // Mobile-Menü
+  var toggle = document.getElementById('menuToggle');
+  var nav = document.getElementById('primaryNav');
+  toggle.addEventListener('click', function(){
+    var open = nav.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  nav.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      nav.classList.remove('open');
+      toggle.setAttribute('aria-expanded','false');
+    });
+  });
+
+  // Leasing-Kalkulator (Platzhalter-Formel)
+  var preis = document.getElementById('calcPreis');
+  var gehalt = document.getElementById('calcGehalt');
+  var ergebnis = document.getElementById('calcErgebnis');
+  function fmt(n){
+    return new Intl.NumberFormat('de-DE', {style:'currency', currency:'EUR', maximumFractionDigits:0}).format(n);
+  }
+  function calc(){
+    var p = parseFloat(preis.value) || 0;
+    var g = parseFloat(gehalt.value) || 0;
+    // Platzhalter-Näherung: 1,2% des Radpreises pro Monat, reduziert um einen
+    // pauschalen Gehaltsumwandlungs-Effekt von 30%. Nur zur Veranschaulichung.
+    var brutto = p * 0.012;
+    var rate = brutto * 0.7;
+    ergebnis.textContent = (p > 0) ? fmt(rate) : '–';
+  }
+  preis.addEventListener('input', calc);
+  gehalt.addEventListener('input', calc);
+  calc();
+
+  // FAQ Akkordeon + Suche
+  var items = Array.prototype.slice.call(document.querySelectorAll('.faq-item'));
+  items.forEach(function(item){
+    var btn = item.querySelector('.faq-q');
+    btn.addEventListener('click', function(){
+      var open = item.getAttribute('data-open') === 'true';
+      item.setAttribute('data-open', open ? 'false' : 'true');
+      btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+    });
+  });
+  var search = document.getElementById('faqSearch');
+  var empty = document.getElementById('faqEmpty');
+  search.addEventListener('input', function(){
+    var q = search.value.trim().toLowerCase();
+    var visible = 0;
+    items.forEach(function(item){
+      var match = item.getAttribute('data-text').indexOf(q) !== -1;
+      item.style.display = match ? '' : 'none';
+      if(match) visible++;
+    });
+    empty.style.display = visible === 0 ? 'block' : 'none';
+  });
+
+  // Kontaktformular: Themenauswahl + Routing-Vorschau
+  var routing = {
+    B2b: {who:'Vertrieb Geschäftskunden', what:'Leasing-Angebote, B2b-Konditionen', avatar:'V'},
+    Werkstatt: {who:'Werkstattleitung', what:'Reparatur, Wartung, Termine', avatar:'W'},
+    Kauf: {who:'Kundenservice', what:'Produktfragen, Kaufberatung', avatar:'K'},
+    Sonstiges: {who:'Kundenservice', what:'Allgemeine Anfragen', avatar:'S'}
+  };
+  var topicBtns = Array.prototype.slice.call(document.querySelectorAll('.topic-pick'));
+  var who = document.getElementById('routingWho');
+  var what = document.getElementById('routingWhat');
+  var avatar = document.getElementById('routingAvatar');
+  topicBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      topicBtns.forEach(function(b){ b.setAttribute('aria-pressed','false'); });
+      btn.setAttribute('aria-pressed','true');
+      var r = routing[btn.getAttribute('data-topic')];
+      who.textContent = r.who;
+      what.textContent = r.what;
+      avatar.textContent = r.avatar;
+    });
+  });
+
+  var form = document.getElementById('contactForm');
+  var confirmBox = document.getElementById('confirmBox');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    confirmBox.setAttribute('data-shown','true');
+  });
+
+  // DSGVO-Consent-Banner
+  var banner = document.getElementById('consentBanner');
+  var accept = document.getElementById('consentAccept');
+  var decline = document.getElementById('consentDecline');
+  var stored = null;
+  try { stored = localStorage.getItem('rwm_consent'); } catch(e){}
+  if(!stored){ banner.setAttribute('data-visible','true'); }
+  function setConsent(v){
+    try { localStorage.setItem('rwm_consent', v); } catch(e){}
+    banner.setAttribute('data-visible','false');
+  }
+  accept.addEventListener('click', function(){ setConsent('accepted'); });
+  decline.addEventListener('click', function(){ setConsent('declined'); });
+})();
+</script>
+</body>
+</html>
