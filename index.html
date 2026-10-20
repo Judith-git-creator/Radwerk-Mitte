@@ -410,6 +410,14 @@ section{padding-block:52px;border-bottom:1px solid var(--border);}
 .loc-card dl{margin:0;font-size:13.5px;color:var(--muted);display:grid;grid-template-columns:auto 1fr;gap:4px 10px;}
 .loc-card dt{font-weight:600;color:var(--fg);}
 .loc-card dd{margin:0;}
+.section-sub{
+  margin-top:36px;
+  padding-top:32px;
+  border-top:1px solid var(--border);
+}
+.section-sub h3{font-size:17px;margin-bottom:6px;}
+.sub-lead{color:var(--muted);font-size:13.5px;margin:0 0 18px;max-width:62ch;}
+.selfservice-head{font-size:15px;margin:0 0 6px;font-family:'Archivo',sans-serif;font-weight:700;}
 
 /* FAQ */
 .faq-search{
@@ -814,6 +822,47 @@ footer ul a:hover{color:var(--blue-500);}
           </dl>
         </div>
       </div>
+
+      <div class="section-sub">
+        <h3>Für Beschäftigte mit Dienstrad</h3>
+        <p class="sub-lead">Nutzen Sie ein Dienstrad über Ihren Arbeitgeber, z. B. im Klinikum? Hier finden Sie Kontaktwege und Anlaufstellen für den Alltag.</p>
+
+        <div class="loc-grid" style="margin-bottom:18px;">
+          <div class="loc-card">
+            <h3>Außerhalb der Öffnungszeiten</h3>
+            <dl>
+              <dt>Telefon</dt><dd>[Platzhalter Telefonnummer, Anrufbeantworter mit Rückruf-Zusage]</dd>
+              <dt>E-Mail</dt><dd>[Platzhalter E-Mail-Adresse]</dd>
+              <dt>Rückmeldung</dt><dd>am nächsten Werktag, spätestens vor dem vereinbarten Termin [Platzhalter]</dd>
+            </dl>
+          </div>
+          <div class="loc-card">
+            <h3>Werkstatttermin vereinbaren</h3>
+            <p style="font-size:13.5px;color:var(--muted);margin:0 0 14px;">Für Wartung oder größere Reparaturen am Dienstrad reservieren wir Ihnen einen festen Termin in Kassel oder Göttingen.</p>
+            <a href="#kontakt" class="btn btn-primary" id="werkstattTerminBtn">Werkstatttermin anfragen</a>
+          </div>
+        </div>
+
+        <h4 class="selfservice-head">Reifen flicken oder aufpumpen – ohne Termin</h4>
+        <p class="sub-lead">Bei einem platten Reifen oder wenig Luft müssen Sie nicht erst einen Werkstatttermin abwarten. Diese Stellen helfen kurzfristig weiter:</p>
+        <div class="ref-grid">
+          <div class="ref-card">
+            <div class="kind">Self-Service</div>
+            <div class="name">Standort Kassel</div>
+            <p class="detail">Luftpumpe und Flickzeug im Eingangsbereich frei zugänglich, auch außerhalb der Öffnungszeiten. [Platzhalter Adresse]</p>
+          </div>
+          <div class="ref-card">
+            <div class="kind">Self-Service</div>
+            <div class="name">Standort Göttingen</div>
+            <p class="detail">Luftpumpe und Flickzeug im Eingangsbereich frei zugänglich, auch außerhalb der Öffnungszeiten. [Platzhalter Adresse]</p>
+          </div>
+          <div class="ref-card">
+            <div class="kind">In der Nähe von Klinikum &amp; Co.</div>
+            <div class="name">[Platzhalter Station/Partner]</div>
+            <p class="detail">Öffentliche Luftpumpstation in Arbeitgeber-Nähe, mit Radwerk Mitte abgestimmt. [Platzhalter Adresse, nach Rücksprache mit Dilan Aydın ergänzen]</p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1066,6 +1115,14 @@ footer ul a:hover{color:var(--blue-500);}
       avatar.textContent = r.avatar;
     });
   });
+
+  var werkstattTerminBtn = document.getElementById('werkstattTerminBtn');
+  if(werkstattTerminBtn){
+    werkstattTerminBtn.addEventListener('click', function(){
+      var werkstattTopic = document.querySelector('.topic-pick[data-topic="Werkstatt"]');
+      if(werkstattTopic){ werkstattTopic.click(); }
+    });
+  }
 
   var form = document.getElementById('contactForm');
   var confirmBox = document.getElementById('confirmBox');
